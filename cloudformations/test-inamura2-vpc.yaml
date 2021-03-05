@@ -8,7 +8,7 @@ Resources:
       CidrBlock: 10.0.0.0/16
       Tags:
         - Key: Name
-        Value: test-inamura-vpc
+          Value: test-inamura-vpc
   # IGW
   myInternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -38,19 +38,18 @@ Resources:
       RouteTableId: !Ref myRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref myCarrierGateway  
-
   # subnet
   mySubnet:
     Type: AWS::EC2::Subnet
     DependsOn: AttachGateway
     Properties:
-      VpcId: !Ref myVPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: 'true'
+      VpcId: !Ref myVPC
       Tags:
       - Key: name
         Value: test-inamura-subnet
-    mySubnetRouteTableAssociation:
+  mySubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref mySubnet
