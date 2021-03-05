@@ -37,7 +37,7 @@ Resources:
     Properties:
       RouteTableId: !Ref myRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref myCarrierGateway  
+      GatewayId: !Ref myInternetGateway  
   # subnet
   mySubnet:
     Type: AWS::EC2::Subnet
