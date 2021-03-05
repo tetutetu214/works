@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation template to create a new VPC First Run stack
+Resources:
+  # -------------------------
+  # VPC
+  # -------------------------
+  FirstVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      Tags:
+      - Key: Name
+        Value:  test-inamura-vpc
+  # -------------------------
+  # IGW
+  # -------------------------
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: test-inamura-igw
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref FirstVPC
+      InternetGatewayId: !Ref InternetGateway
+  # -------------------------
+  # RouteTable
+  # -------------------------
+  FrontendRouteTable:
+    Type: AWS::EC2::RouteTable
+    DependsOn: AttachGateway
+    Properties:
+      VpcId: !Ref FirstVPC
+      Tags:
+      - Key: Name
+        Value: test-inamura-RouteTable
+  FrontendRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref FrontendRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  # -------------------------
+  # Subnet
+  # -------------------------
+  FrontendSubnet:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGateway
+    Properties:
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: 'true'
+      VpcId: !Ref FirstVPC
+      Tags:
+      - Key: Name
+        Value: test-inamura-Subnet
+  FrontendSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref FrontendSubnet
+      RouteTableId: !Ref FrontendRouteTable
