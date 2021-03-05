@@ -9,9 +9,8 @@ Parameters:
 Resources:
   EC2WebServer01:
     Type: AWS::EC2::Instance
-        Default: handson-cfn
-        Properties:
-          ImageId: !Ref EC2AMI
+    Properties:
+      ImageId: !Ref EC2AMI
 
 Outputs:
   EC2WebServer01:
