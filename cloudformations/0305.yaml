@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Hands-on template for EC2
+
+Parameters:
+  VPCStack:
+    Type: String
+    Default: handson-cfn
+
+Resources:
+  EC2WebServer01:
+    Type: AWS::EC2::Instance
+        Default: handson-cfn
+        Properties:
+          ImageId: !Ref EC2AMI
+
+Outputs:
+  EC2WebServer01:
+    Value: !Ref EC2WebServer01
+    Export:
+      Name: !Sub ${AWS::StackName}-
